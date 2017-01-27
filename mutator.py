@@ -28,14 +28,17 @@ class Mutator:
         # mutate pc
         pc_delta = numpy.random.normal(loc=0.0, scale=self.Sigma_pc, size=None)
         new_pc = individual.pc + pc_delta
+        new_pc = max(min(new_pc, 10000), individual.omega/2)
 
         # mutate i
         i_delta = numpy.random.normal(loc=0.0, scale=self.Sigma_i, size=None)
         new_i = individual.i + i_delta
+        new_i = max(min(new_i, individual.omega/2), 0)
 
         # mutate phi1
         phi1_delta = numpy.random.normal(loc=0.0, scale=self.Sigma_phi1, size=None)
         new_phi1 = individual.phi1 + phi1_delta
+        new_phi1 = max(min(new_phi1, math.pi/2), 0)
 
         # mutate n0
         n0_delta = numpy.random.normal(loc=0.0, scale=self.Sigma_n0, size=None)
