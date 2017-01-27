@@ -15,7 +15,7 @@ class Individual:
     indice_refraction_dict = indice_refraction_temp
 
     def __repr__(self):
-        return '{} {} {} {}'.format(self.pc, self.i, self.phi1, self.n0)
+        return '{} {} {} {} {}'.format(self.pc, self.i, self.phi1, self.n0, self.fitness)
 
     def __init__(self, omega, world, pc, i, phi1, n0):
         self.omega = omega
