@@ -42,7 +42,7 @@ class Mutator:
         new_n0 = individual.n0 + n0_delta
         new_n0 = max(min(new_n0, 1.550),1.350)
 
-        new_individual = Individual(individual.omega, new_pc, new_i, new_phi1, new_n0, self.world)
+        new_individual = Individual(individual.omega, self.world, new_pc, new_i, new_phi1, new_n0)
 
         return new_individual
 
@@ -75,7 +75,7 @@ class Mutator:
         if nrand > self.CT_n0 :
             genes_1[0], genes_2[0] = genes_2[0], genes_1[0]
 
-        new_indiv_1 = Individual(indiv_1.omega, *genes_1)
-        new_indiv_2 = Individual(indiv_1.omega, *genes_2)
+        new_indiv_1 = Individual(indiv_1.omega, self.world, *genes_1)
+        new_indiv_2 = Individual(indiv_1.omega, self.world, *genes_2)
 
         return new_indiv_1, new_indiv_2

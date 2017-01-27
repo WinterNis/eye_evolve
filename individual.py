@@ -17,7 +17,7 @@ class Individual:
     def __repr__(self):
         return 'pc:{} i:{} phi1:{} n0:{}'.format(self.pc, self.i, self.phi1, self.n0)
 
-    def __init__(self, omega, pc, i, phi1, n0, world):
+    def __init__(self, omega, world, pc, i, phi1, n0):
         self.omega = omega
         self.pc = pc
         self.i = i
