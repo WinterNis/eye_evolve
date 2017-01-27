@@ -4,16 +4,25 @@ from individual import Individual
 
 class Mutator:
 
-    def __init__(self, Sigma_pc, Sigma_i, Sigma_phi1, Sigma_n0):
+    def __init__(self, Sigma_pc, Sigma_i, Sigma_phi1, Sigma_n0, CT_pc, CT_i, CT_phi1, CT_n0):
+        # probabilistic distribution spread of the genes.
         self.Sigma_pc = Sigma_pc
         self.Sigma_i = Sigma_i
         self.Sigma_phi1 = Sigma_phi1
         self.Sigma_n0 = Sigma_n0
 
+        # Crossover thresholds for pc, i, phi1 and n0
+        self.CT_pc = CT_pc
+        self.CT_i = CT_i
+        self.CT_phi1 = CT_phi1
+        self.CT_n0 = CT_n0
 
-    # mutates the individual given as parameter using numpy.normal
-    # returns a NEW individual resulting from the mutation of the given individual
+
     def mutate(self, individual):
+        """
+        Mutates the individual given as parameter using numpy.normal
+        Returns a NEW individual resulting from the mutation of the given individual
+        """
 
         # mutate pc
         pc_delta = numpy.random.normal(loc=0.0, scale=self.Sigma_pc, size=None)
@@ -35,3 +44,37 @@ class Mutator:
         new_individual = Individual(individual.omega, new_pc, new_i, new_phi1, new_n0)
 
         return new_individual
+
+
+    def crossover(self, indiv_1, indiv_2):
+        """
+        Creates 2 "crossovered" individuals from the 2 parents given as parameters
+        Crossovered individuals share 1 exclusive copy of the parent genes
+        Probability that gene crossing occurs respects the crossover thresholds. 
+        """
+
+        # genes of parent individuals
+        genes_1 = [indiv_1.pc, indiv_1.i, indiv_1.phi1, indiv_1.n0]
+        genes_2 = [indiv_2.pc, indiv_2.i, indiv_2.phi1, indiv_2.n0]
+
+        # for each gene, the probability to be exchanged respects a given threshold
+        nrand = numpy.random.uniform()
+        if nrand > self.CT_pc :
+            genes_1[0], genes_2[0] = genes_2[0], genes_1[0]
+        
+        nrand = numpy.random.uniform()
+        if nrand > self.CT_i :
+            genes_1[0], genes_2[0] = genes_2[0], genes_1[0]
+            
+        nrand = numpy.random.uniform()
+        if nrand > self.CT_phi1 :
+            genes_1[0], genes_2[0] = genes_2[0], genes_1[0]
+            
+        nrand = numpy.random.uniform()
+        if nrand > self.CT_n0 :
+            genes_1[0], genes_2[0] = genes_2[0], genes_1[0]
+        
+        new_indiv_1 = Individual(indiv_1.omega, *genes_1)
+        new_indiv_2 = Individual(indiv_1.omega, *genes_2)
+
+        return new_indiv_1, new_indiv_2
