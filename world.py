@@ -65,7 +65,46 @@ class World:
         candidates_t2 = [candidate_positive_fitness[randint(0, len(candidate_positive_fitness) - 1)]
                             for i in range(self.tournament_size)]
 
-        fittest_candidate_t1 = sorted(candidates_t1, key = lambda x: x.fitness)[len(candidates_t1)-1]
-        fittest_candidate_t2 = sorted(candidates_t2, key = lambda x: x.fitness)[len(candidates_t2)-1]
+        fittest_candidate_t1 = sorted(candidates_t1, key = lambda x: x.fitness,reverse=True)[0]
+        fittest_candidate_t2 = sorted(candidates_t2, key = lambda x: x.fitness,reverse=True)[0]
 
         return fittest_candidate_t1, fittest_candidate_t2
+
+
+    def run_biased_wheel(self):
+        """
+            Make two tournament using a biased wheel, give the two winners
+            Supposes that at least "self.tournament_size" individual have positives scores.
+        """
+
+        tmp_collection = []
+        tmp_scores_cumul = []
+        prev = 0
+        for i in population:
+            if i.fitness > 0:
+                tmp_collection.append(i)
+                prev = prev + i.fitness
+                tmp_scores_cumul.append(prev)
+        
+        total = tmp_scores_cumul[-1]
+
+        competitors = []
+
+        # biased selection of the competitors
+        for i in range(self.tournament_size):
+            # pick a random value
+            randval = numpy.random.uniform(0.00000001,total)
+
+            # find the index of the interval
+            for j in range(len(collection)):
+                if tmp_scores_cumul[j] < randval:
+                    continue
+                else:
+                    competitors.append(tmp_collection[j])
+                    break
+        
+        # select and return 2 best competitor
+
+        competitors = sorted(competitors, key = lambda x: x.fitness,reverse=True)
+        
+        return competitors[0], competitors[1]
