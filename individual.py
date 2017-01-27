@@ -39,7 +39,7 @@ class Individual:
 
 
         if self.n0 == 1.350:
-            self.view_angle = 2*math.atan(self.aperture/2*self.depth)
+            self.view_angle = 2*math.atan(self.aperture/(2*self.depth))
         elif self.n0 > 1.350:
             sq_ratio = self.lense_ratio*self.lense_ratio
             sq_aperture = self.aperture*self.aperture

@@ -9,7 +9,7 @@ class World:
         self.I = I
         self.tournament_size = tournament_size
         self.population = population
-        self.mutator = Mutator(1, 1, 1, 1, self)
+        self.mutator = Mutator(1, 1, 1, 1, 0.1, 0.1, 0.1, 0.1, self)
 
 
     def run_evolution(self):
