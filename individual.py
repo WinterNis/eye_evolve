@@ -15,7 +15,7 @@ class Individual:
     indice_refraction_dict = indice_refraction_temp
 
     def __repr__(self):
-        return 'pc:{} i:{} phi1:{} n0:{}'.format(self.pc, self.i, self.phi1, self.n0)
+        return '{} {} {} {}'.format(self.pc, self.i, self.phi1, self.n0)
 
     def __init__(self, omega, world, pc, i, phi1, n0):
         self.omega = omega
@@ -57,25 +57,32 @@ class Individual:
         # check if the individual is sterile.
         if self.phi1 != 0 and self.omega/2 != self.pc:
             self.fitness = 0
+            return
 
         cache_1 = self.omega*math.cos(self.phi1)
         if self.phi1 != 0 and self.i > cache_1/2:
             self.fitness = 0
+            return
 
         cache_2 = math.sqrt(math.e/(0.746*math.sqrt(self.world.I)))
         if self.n0 == 1.35 and self.phi1 == 0 and self.i > (self.omega- cache_2)/2:
             self.fitness = 0
+            return
 
         if self.n0 == 1.35 and self.phi1 != 0 and self.i > (cache_1 - cache_2)/2:
             self.fitness = 0
+            return
 
         if self.n0 != 1.35 and (self.depth > self.lense_ratio*self.aperture/2 or
                                       self.depth < self.aperture/2) :
             self.fitness = 0
+            return
 
         # compute the fitness score of the individual.
         if self.n0 == 1.35:
             self.fitness = (0.375*(self.depth/self.aperture)*
                     math.sqrt(math.log(0.746*self.aperture*self.aperture*math.sqrt(self.world.I))))
+            return
         else:
             self.fitness = 1/self.view_angle
+            return
