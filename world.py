@@ -14,7 +14,7 @@ class World:
         for i_population in range(population_size):
             self.population.append(Individual(1.5, self, 10000, 0, 0, 1.35))
 
-        self.mutator = Mutator(1000, 1, 1, 0, 0.5, 0.5, 0.5, 0.5, self)
+        self.mutator = Mutator(1, 0.001, 0.001, 0.01, 0.5, 0.5, 0.5, 0.5, self)
 
 
     def run_evolution(self):
@@ -27,7 +27,7 @@ class World:
         #
         # new_1, new_2 = self.mutator.crossover(individual, new_individual)
 
-        for i in range(200):
+        for i in range(1000000):
             # select two individuals winners of tournaments
             fittest_1, fittest_2 = self.run_tournament()
 
@@ -44,9 +44,9 @@ class World:
             # print('{} fitness:{}'.format(child_1, child_1.fitness))
             # print('{} fitness:{}'.format(child_2, child_2.fitness))
 
-
-            best = sorted(self.population, key = lambda x: x.fitness)[len(self.population) - 1]
-            print('{}'.format(best))
+            if i % 100 == 0:
+                best = sorted(self.population, key = lambda x: x.fitness)[len(self.population) - 1]
+                print('{}'.format(best))
 
 
     def run_tournament(self):

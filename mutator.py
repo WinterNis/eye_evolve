@@ -27,7 +27,7 @@ class Mutator:
 
         # mutate pc
         pc_delta = numpy.random.normal(loc=0.0, scale=self.Sigma_pc, size=None)
-        new_pc = individual.pc + pc_delta
+        new_pc = individual.pc * (1 + pc_delta)
         new_pc = max(min(new_pc, 10000), individual.omega/2)
 
         # mutate i

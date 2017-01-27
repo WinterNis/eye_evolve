@@ -44,9 +44,18 @@ class Individual:
             sq_ratio = self.lense_ratio*self.lense_ratio
             sq_aperture = self.aperture*self.aperture
             sq_depth = self.depth*self.depth
-            up = (sq_ratio*self.aperture/(2*self.depth)) - math.sqrt(1 + sq_ratio - (sq_ratio*sq_aperture/(4*sq_depth)))
+
+            try:
+                up = (sq_ratio*self.aperture/(2*self.depth)) - math.sqrt(1 + sq_ratio - (sq_ratio*sq_aperture/(4*sq_depth)))
+            except:
+                up = 0
+
             down = 1 + sq_depth
-            self.view_angle = 2 * math.asin(up/down)
+
+            try:
+                self.view_angle = 2 * math.asin(up/down)
+            except:
+                self.view_angle = float('inf')
 
         self.compute_fitness()
 
