@@ -14,7 +14,7 @@ class World:
         for i_population in range(population_size):
             self.population.append(Individual(1.5, self, 10000, 0, 0, 1.35))
 
-        self.mutator = Mutator(1, 0.001, 0.001, 0.01, 0.5, 0.5, 0.5, 0.5, self)
+        self.mutator = Mutator(1, 0.05, 0.05, 0.01, 0.5, 0.5, 0.5, 0.5, self)
 
 
     def run_evolution(self):
@@ -27,9 +27,9 @@ class World:
         #
         # new_1, new_2 = self.mutator.crossover(individual, new_individual)
 
-        for i in range(1000000):
+        for i in range(300000):
             # select two individuals winners of tournaments
-            fittest_1, fittest_2 = self.run_tournament()
+            fittest_1, fittest_2 = self.run_biased_wheel()
 
             # create two children from those winners
             child_1, child_2 = self.mutator.crossover(fittest_1, fittest_2)
@@ -44,9 +44,12 @@ class World:
             # print('{} fitness:{}'.format(child_1, child_1.fitness))
             # print('{} fitness:{}'.format(child_2, child_2.fitness))
 
-            if i % 100 == 0:
+            verybest = 0
+            if i % 1000 == 0:
                 best = sorted(self.population, key = lambda x: x.fitness)[len(self.population) - 1]
-                print('{}'.format(best))
+                if best.fitness > verybest:
+                    print('{}'.format(best))
+                    verybest = best.fitness
 
 
     def run_tournament(self):
@@ -80,7 +83,7 @@ class World:
         tmp_collection = []
         tmp_scores_cumul = []
         prev = 0
-        for i in population:
+        for i in self.population:
             if i.fitness > 0:
                 tmp_collection.append(i)
                 prev = prev + i.fitness
@@ -96,7 +99,7 @@ class World:
             randval = numpy.random.uniform(0.00000001,total)
 
             # find the index of the interval
-            for j in range(len(collection)):
+            for j in range(len(tmp_collection)):
                 if tmp_scores_cumul[j] < randval:
                     continue
                 else:
